@@ -7,5 +7,4 @@ class Semaphore {
         counter = init_value;
 
     }
-
 }

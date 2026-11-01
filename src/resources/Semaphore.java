@@ -1,3 +1,4 @@
+package resources;
 import java.util.concurrent.TimeUnit;
 public class Semaphore {
     protected int counter;
