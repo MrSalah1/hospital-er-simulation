@@ -15,7 +15,7 @@ public class WaitingRoom {
     private final Queue<Patient> PatientQ = new LinkedList<>();
 
 
-    WaitingRoom(int capacity) {
+    public WaitingRoom(int capacity) {
         this.capacity = capacity;
         this.emptyCounter = new Semaphore(capacity);
     }
