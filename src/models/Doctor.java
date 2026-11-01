@@ -13,6 +13,6 @@ public class Doctor {
 
     @Override
     public String toString() {
-        return "Doctor-" + id;
+        return "Doctor " + id;
     }
 }

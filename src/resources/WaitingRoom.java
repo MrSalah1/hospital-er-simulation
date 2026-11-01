@@ -42,7 +42,7 @@ public class WaitingRoom {
 
         mutex.acquire();
         Patient p = PatientQ.remove();
-        System.out.println(doctor+ "  is assigned to "+ p);
+        System.out.println(doctor+ " is assigned to "+ p);
         mutex.release();
 
         emptyCounter.release();
