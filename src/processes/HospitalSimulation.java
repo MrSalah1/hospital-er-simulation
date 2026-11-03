@@ -26,7 +26,7 @@ public class HospitalSimulation {
         this.numDoctors = numDoctors;
         this.numPatients = numPatients;
 
-        // 1. Create WaitingRoom(capacity), TreatmentRooms(2), doctors list
+
         this.waitingRoom = new WaitingRoom(waitingRoomCapacity);
         this.treatmentRooms = new TreatmentRooms(2);
         this.doctors = new ArrayList<>();
@@ -36,7 +36,7 @@ public class HospitalSimulation {
     }
 
     public void startSimulation() {
-        // 2. Create/start arrival thread + one doctor thread each
+
         arrivalThread = new Thread(new PatientArrivalProcess(waitingRoom, numPatients));
         arrivalThread.start();
 
@@ -46,11 +46,9 @@ public class HospitalSimulation {
             doctorThread.start();
         }
 
-        // 3. join() all threads, then print a summary
         try {
             arrivalThread.join();
 
-            // Wait until all patients are treated
             while (treatedCount.get() < numPatients) {
                 Thread.sleep(100);
             }
@@ -66,12 +64,12 @@ public class HospitalSimulation {
             Thread.currentThread().interrupt();
         }
 
-        System.out.println("All patients have been treated.");
-        System.out.println("Simulation completed.");
+        System.out.println("All patients are treated.");
+        System.out.println("Simulation compeleted.");
     }
 
     public static void main(String[] args) {
-        HospitalSimulation simulation = new HospitalSimulation(2, 3, 5);
-        simulation.startSimulation();
+        //HospitalSimulation simulation = new HospitalSimulation(2, 3, 5);
+        //simulation.startSimulation();
     }
 }
