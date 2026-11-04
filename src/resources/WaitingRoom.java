@@ -15,13 +15,12 @@ public class WaitingRoom {
     private final Queue<Patient> PatientQ = new LinkedList<>();
 
 
-    WaitingRoom(int capacity) {
+    public WaitingRoom(int capacity) {
         this.capacity = capacity;
         this.emptyCounter = new Semaphore(capacity);
     }
 
     public void EnterPatient(Patient patient) throws InterruptedException {
-        System.out.println(patient+ " arrived at the hospital.");
 
         if (!emptyCounter.tryAcquire(0)) {
             System.out.println("The waiting room is full.");
