@@ -1,6 +1,7 @@
 package models;
 
 import resources.WaitingRoom;
+import util.ConsoleLogger;
 
 public class Patient extends Thread {
     private final int id;
@@ -32,7 +33,6 @@ public class Patient extends Thread {
 
     @Override
     public void run() {
-        System.out.println(this +  " arrived at the hospital.");
         enterWaitingRoom();
     }
 
@@ -44,7 +44,7 @@ public class Patient extends Thread {
     }
 
     public void leavePatient() {
-        System.out.println(this + " left.");
+        ConsoleLogger.log(this + " left.");
     }
 
 }

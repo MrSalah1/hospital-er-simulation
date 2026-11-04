@@ -2,6 +2,7 @@ package resources;
 
 import models.Patient;
 import models.Doctor;
+import util.ConsoleLogger;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -23,14 +24,13 @@ public class WaitingRoom {
     public void EnterPatient(Patient patient) throws InterruptedException {
 
         if (!emptyCounter.tryAcquire(0)) {
-            System.out.println("The waiting room is full.");
-            System.out.println(patient+ " is waiting outside for an available seat.");
+            ConsoleLogger.log(patient + " is waiting outside because the waiting room is full.");
             emptyCounter.acquire();
         }
 
         mutex.acquire();
         PatientQ.add(patient);
-        System.out.println(patient+ " entered the waiting room.");
+        ConsoleLogger.log(patient + " entered the waiting room.");
         mutex.release();
 
         fullCounter.release();
@@ -41,7 +41,7 @@ public class WaitingRoom {
 
         mutex.acquire();
         Patient p = PatientQ.remove();
-        System.out.println(doctor+ " is assigned to "+ p);
+        ConsoleLogger.log(doctor + " is assigned to " + p);
         mutex.release();
 
         emptyCounter.release();
@@ -51,15 +51,14 @@ public class WaitingRoom {
     public void returnPatient(Patient patient) throws InterruptedException {
 
         if (!emptyCounter.tryAcquire(0)) {
-            System.out.println("The waiting room is full.");
-            System.out.println(patient + " is waiting outside for an available seat.");
+            ConsoleLogger.log(patient + " is waiting outside because the waiting room is full.");
             emptyCounter.acquire();
         }
 
         mutex.acquire();
         try {
             PatientQ.add(patient);
-            System.out.println(patient + " entered the waiting room.");
+            ConsoleLogger.log(patient + " entered the waiting room.");
         } finally {
             mutex.release();
         }

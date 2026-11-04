@@ -1,8 +1,10 @@
 package processes;
 
 import models.Doctor;
+import models.Patient;
 import resources.TreatmentRooms;
 import resources.WaitingRoom;
+import util.ConsoleLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class HospitalSimulation {
     private final WaitingRoom waitingRoom;
     private final TreatmentRooms treatmentRooms;
     private final List<Doctor> doctors;
+    private final List<Patient> patients;
 
     private Thread arrivalThread;
     private final List<Thread> doctorThreads = new ArrayList<>();
@@ -33,11 +36,16 @@ public class HospitalSimulation {
         for (int i = 1; i <= numDoctors; i++) {
             doctors.add(new Doctor(i));
         }
+
+        this.patients = new ArrayList<>();
+        for (int i = 1; i <= numPatients; i++) {
+            patients.add(new Patient(i, waitingRoom));
+        }
     }
 
     public void startSimulation() {
 
-        arrivalThread = new Thread(new PatientArrivalProcess(waitingRoom, numPatients));
+        arrivalThread = new Thread(new PatientArrivalProcess(patients));
         arrivalThread.start();
 
         for (Doctor doctor : doctors) {
@@ -64,8 +72,9 @@ public class HospitalSimulation {
             Thread.currentThread().interrupt();
         }
 
-        System.out.println("All patients are treated.");
-        System.out.println("Simulation compeleted.");
+        ConsoleLogger.logAll(
+                "All patients are treated.",
+                "Simulation completed.");
     }
 
     public static void main(String[] args) {

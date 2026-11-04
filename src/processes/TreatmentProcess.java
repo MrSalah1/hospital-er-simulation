@@ -4,6 +4,7 @@ import models.Doctor;
 import models.Patient;
 import resources.TreatmentRooms;
 import resources.WaitingRoom;
+import util.ConsoleLogger;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,46 +35,45 @@ public class TreatmentProcess implements Runnable{
 
         while (treatedCount.get() < numPatients) {
 
-            try{
+            try {
                 Patient patient = waitingRoom.DoctorgetsPatient(doctor);
 
-                System.out.println(doctor + " is trying to acquire a treatment room.");
+                ConsoleLogger.log(doctor + " is trying to acquire a treatment room.");
 
                 boolean acquired = treatmentRooms.acquireRoom(3000);
 
                 if (acquired) {
-                    System.out.println(doctor + " acquired a treatment room.");
-                    System.out.println(doctor + " begins treating " + patient + ".");
+                    ConsoleLogger.logAll(
+                            doctor + " acquired a treatment room.",
+                            doctor + " begins treating " + patient + ".");
 
                     try {
                         int treatmentTime = ThreadLocalRandom.current().nextInt(1000, 3001);
 
                         Thread.sleep(treatmentTime);
-
-                        System.out.println(doctor + " finished treating " + patient + ".");
-
                     } finally {
                         treatmentRooms.releaseRoom();
-                        System.out.println(doctor + " released the treatment room.");
                     }
+
+                    ConsoleLogger.logAll(
+                            doctor + " finished treating " + patient + ".",
+                            doctor + " released the treatment room.");
 
                     treatedCount.incrementAndGet();
 
-                    System.out.println(doctor + " is now available.");
-                    System.out.println(patient + " left.");
-
+                    ConsoleLogger.logAll(
+                            doctor + " is now available.",
+                            patient + " left.");
                 } else {
-
-                    System.out.println(doctor + " could not acquire a treatment room.");
-
-                    System.out.println(doctor + " is sending " + patient
-                            + " back to the waiting room.");
+                    ConsoleLogger.logAll(
+                            doctor + " could not acquire a treatment room.",
+                            doctor + " is sending " + patient + " back to the waiting room.");
 
                     waitingRoom.returnPatient(patient);
 
-                    System.out.println(doctor + " is now available.");
+                    ConsoleLogger.log(doctor + " is now available.");
                 }
-                
+
             } catch (InterruptedException e) {
                 break;
             }
