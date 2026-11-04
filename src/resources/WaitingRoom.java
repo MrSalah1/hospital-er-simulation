@@ -48,4 +48,23 @@ public class WaitingRoom {
         return p;
     }
 
+    public void returnPatient(Patient patient) throws InterruptedException {
+
+        if (!emptyCounter.tryAcquire(0)) {
+            System.out.println("The waiting room is full.");
+            System.out.println(patient + " is waiting outside for an available seat.");
+            emptyCounter.acquire();
+        }
+
+        mutex.acquire();
+        try {
+            PatientQ.add(patient);
+            System.out.println(patient + " entered the waiting room.");
+        } finally {
+            mutex.release();
+        }
+
+        fullCounter.release();
+    }
+
 }
