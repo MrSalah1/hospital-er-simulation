@@ -21,7 +21,6 @@ public class WaitingRoom {
     }
 
     public void EnterPatient(Patient patient) throws InterruptedException {
-        System.out.println(patient+ " arrived at the hospital.");
 
         if (!emptyCounter.tryAcquire(0)) {
             System.out.println("The waiting room is full.");
