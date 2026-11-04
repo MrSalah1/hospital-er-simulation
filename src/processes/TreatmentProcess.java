@@ -48,9 +48,9 @@ public class TreatmentProcess implements Runnable{
                             doctor + " begins treating " + patient + ".");
 
                     try {
-                        int treatmentTime = ThreadLocalRandom.current().nextInt(1000, 6001);
+                        int treatmentTime = ThreadLocalRandom.current().nextInt(1000, 3001);
 
-                        Thread.sleep(5000);
+                        Thread.sleep(treatmentTime);
                     } finally {
                         treatmentRooms.releaseRoom();
                     }
